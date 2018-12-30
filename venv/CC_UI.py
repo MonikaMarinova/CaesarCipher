@@ -1,3 +1,7 @@
+"""
+User Interfase implementation for Caeser's cipher solution
+Implemented by: Monika Marinova
+"""
 from tkinter import  *
 from CC_main_func import *
 
@@ -11,7 +15,7 @@ topFrame.pack()
 bottomFrame = Frame(root)
 bottomFrame.pack(side = BOTTOM)
 
-# creating and displaying info label
+# creating and displaying labels
 hello_CC_label = Label(topFrame, text = " Hi, this is Caesar's Cipher" )
 hello_CC_label.pack(side = LEFT)
 text_lbl = Label(topFrame, text = "Insert text here: ")
