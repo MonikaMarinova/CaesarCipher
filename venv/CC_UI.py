@@ -1,5 +1,5 @@
 """
-User Interfase implementation for Caeser's cipher solution
+User Interface implementation for Caeser's cipher solution
 Implemented by: Monika Marinova
 """
 from tkinter import  *
@@ -9,24 +9,29 @@ from CC_main_func import *
 # creating a window
 root = Tk()
 
-# creating and displaying a layout using frames
-topFrame = Frame(root)
-topFrame.pack()
-bottomFrame = Frame(root)
-bottomFrame.pack(side = BOTTOM)
 
-# creating and displaying labels
-hello_CC_label = Label(topFrame, text = " Hi, this is Caesar's Cipher" )
-hello_CC_label.pack(side = LEFT)
-text_lbl = Label(topFrame, text = "Insert text here: ")
-text_lbl.pack(side = LEFT)
-key_lbl = Label (topFrame, text = "Insert key between 1 and 25")
-key_lbl.pack(side = LEFT)
+# creating labels
+hello_CC_label = Label(root, text = " Hi, this is Caesar's Cipher" )
+text_lbl = Label(root, text = "Insert text here:")
+key_lbl = Label (root, text = "Insert key between 1 and 25:")
 
-#creating and displaying buttons
-encryption_button = Button(bottomFrame, text = "Encrypt")
-encryption_button.pack(side = RIGHT)
-decryption_button = Button(bottomFrame, text = "Decrypt")
-decryption_button.pack(side = LEFT)
+#creating entries
+text_entry = Entry(root)
+key_entry = Entry(root)
+
+#creating buttons
+encryption_button = Button(root, text = "Encrypt")
+decryption_button = Button(root, text = "Decrypt")
+
+# grid layout
+hello_CC_label.grid(row = 0)
+text_lbl.grid(row = 1)
+key_lbl.grid(row = 2)
+text_entry.grid(row = 1, column = 1)
+key_entry.grid(row = 2, column = 1)
+encryption_button.grid(row = 6, column = 0)
+decryption_button.grid(row = 6, column = 1)
+
+
 
 root.mainloop()
