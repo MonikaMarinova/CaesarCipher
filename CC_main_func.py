@@ -3,6 +3,10 @@ Application for encrypting and decrypting text using Caesar's Cipher
 Problem covering algorithmic and security bases, creating UI from scratch
 Implemented  by: Monika Marinova
 """
+
+# to do on click func
+# .get()??
+
 from tkinter import *
 
 
@@ -48,11 +52,8 @@ def cc_gui():
     decryption_button.grid(row=6, column=1)
 
     # binding
-    #encryption_button.bind("<Button-1>", encrypt(text_entry.get(), key_entry.get()))
-    #decryption_button.bind("<Button-1>", decrypt(text_entry.get(), key_entry.get()))
-
-    encryption_button.bind("<Button-1>", encrypt("aa",12))
-    decryption_button.bind("<Button-1>", decrypt("BB", 7))
+    encryption_button.bind("<Button-1>", encrypt(text_entry.get(),key_entry.get()))
+    decryption_button.bind("<Button-1>", decrypt(text_entry.get(),key_entry.get()))
 
     root.mainloop()
 
@@ -95,7 +96,6 @@ def encrypt(text, key):
 
     else:
         text_output.insert(END, "Key must be between 1 and 25!")
-
 
 
 def decrypt(encrypted_text, key):
