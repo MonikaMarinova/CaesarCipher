@@ -4,10 +4,7 @@ Problem covering algorithmic and security bases, creating UI from scratch
 Implemented  by: Monika Marinova
 """
 
-# to do on click func
-# .get()??
-
-from tkinter import *
+import tkinter as tk
 
 
 # Global variables for defining the range of lower case latin alphabet based on ASCII table
@@ -15,56 +12,73 @@ ascii_lower_a = 97
 ascii_lower_z = 122
 # Global variable for defining the number of letters in latin alphabet
 number_of_letters = 25
-# creating a window
-root = Tk()
-# creating a Global Text widget for displaying result values
-text_output = Text(root, height=2, width=30)
 
 
-def cc_gui():
+class CCApp(tk.Tk):
     """
-    Function in which is implemented simple UI
-    :return: None
+    Class in which is defined simple UI interface
+    Several widgets are created and aligned into window form using grid alignment
+    functions: on_enc_click, on_deck_click
     """
-    # creating labels
-    hello_cc_label = Label(root, text=" Hi, this is Caesar's Cipher")
-    text_lbl = Label(root, text="Insert text here:")
-    key_lbl = Label(root, text="Insert key between 1 and 25:")
-    text_output_lbl = Label(root, text="Result: ")
 
-    # creating entries
-    text_entry = Entry(root)
-    key_entry = Entry(root)
+    # Constructor in which widgets are created and aligned in a window form
+    def __init__(self):
+        tk.Tk.__init__(self)
+        # creating labels
+        self.hello_cc_label = tk.Label(self, text=" Hi, this is Caesar's Cipher")
+        self.text_lbl = tk.Label(self, text="Insert text here:")
+        self.key_lbl = tk.Label(self, text="Insert key between 1 and 25:")
+        self.text_output_lbl = tk.Label(self, text="Result: ")
 
-    # creating buttons
-    encryption_button = Button(root, text="Encrypt")
-    decryption_button = Button(root, text="Decrypt")
+        # creating a Text widget for displaying result values
+        self.text_output = tk.Text(self, height=2, width=30)
 
-    # grid layout
-    hello_cc_label.grid(row=0, sticky=W)
-    text_lbl.grid(row=1, sticky=E)
-    key_lbl.grid(row=2, sticky=E)
-    text_output_lbl.grid(row=3, sticky=E)
-    text_entry.grid(row=1, column=1)
-    key_entry.grid(row=2, column=1)
-    text_output.grid(row=3, column=1)
-    encryption_button.grid(row=6, column=0)
-    decryption_button.grid(row=6, column=1)
+        # creating entries and StringVars for getting entry values
+        self.text_entry = tk.Entry(self)
+        self.key_entry = tk.Entry(self)
 
-    # binding
-    encryption_button.bind("<Button-1>", encrypt(text_entry.get(),key_entry.get()))
-    decryption_button.bind("<Button-1>", decrypt(text_entry.get(),key_entry.get()))
+        # creating and binding buttons to click methods
+        self.encryption_button = tk.Button(self, text="Encrypt", command=self.on_enc_click)
+        self.decryption_button = tk.Button(self, text="Decrypt", command=self.on_dec_click)
 
-    root.mainloop()
+        # grid layout
+        self.hello_cc_label.grid(row=0, sticky=tk.W)
+        self.text_lbl.grid(row=1, sticky=tk.E)
+        self.key_lbl.grid(row=2, sticky=tk.E)
+        self.text_output_lbl.grid(row=3, sticky=tk.E)
+        self.text_entry.grid(row=1, column=1)
+        self.key_entry.grid(row=2, column=1)
+        self.text_output.grid(row=3, column=1)
+        self.encryption_button.grid(row=6, column=0)
+        self.decryption_button.grid(row=6, column=1)
 
+    def on_enc_click(self):
+        """
+        Click method for button encryption_button
+        :return: None
+        """
 
-def key_in_range(key):
-    """
-    Function for checking if provided key is within range between 1 and 25
-    :param key: string
-    :return: bool
-    """
-    return 1 >= int(key) <= 25
+        # deleting any previous text in Text widget
+        self.text_output.delete("1.0", tk.END)
+        # getting values which are user input for text and key
+        text_entry_value = self.text_entry.get()
+        key_entry_value = self.key_entry.get()
+        # encrypted text is visualised into the text widget
+        self.text_output.insert("1.0", encrypt(text_entry_value, key_entry_value))
+
+    def on_dec_click(self):
+        """
+        Click method for button decryption_button
+        :return: None
+        """
+
+        # deleting any previous text in Text widget
+        self.text_output.delete("1.0", tk.END)
+        # getting values which are user input for text and key
+        text_entry_value = self.text_entry.get()
+        key_entry_value = self.key_entry.get()
+        # encrypted text is visualised into the text widget
+        self.text_output.insert("1.0", decrypt(text_entry_value, key_entry_value))
 
 
 def encrypt(text, key):
@@ -72,10 +86,15 @@ def encrypt(text, key):
     Function which implements encryption using Caesar's Cipher
     :param text:string
     :param key: string
-    :return None
+    :return string
     """
 
-    if key_in_range(key):
+    # validating if the key is in the range between 1 and 25
+    if 1 <= int(key) and int(key) >= 25:
+        return "Key must be between 1 and 25!"
+    else:
+        # make the given string lower case
+        text = text.lower()
         # removing white spaces from the input text, creating a list
         phrase = list(''.join(text.split()))
         # creating variable for saving the final result
@@ -92,10 +111,7 @@ def encrypt(text, key):
             # adding encrypted character to the result phrase
             encrypted_phrase += chr(encrypted_character)
 
-        text_output.insert(END, encrypted_phrase)
-
-    else:
-        text_output.insert(END, "Key must be between 1 and 25!")
+        return encrypted_phrase
 
 
 def decrypt(encrypted_text, key):
@@ -103,12 +119,15 @@ def decrypt(encrypted_text, key):
     Function which implements decryption using Caesar's Cipher
     :param encrypted_text: string
     :param key: string
-    :return None
+    :return string
     """
 
-    if key_in_range(key):
-        # creating a list from input text
-        phrase = list(encrypted_text)
+    # validating if the key is in the range between 1 and 25
+    if 1 <= int(key) and int(key) >= 25:
+        return "Key must be between 1 and 25!"
+    else:
+        # creating a list from lower case input text
+        phrase = list(encrypted_text.lower())
         # creating variable for saving the final result
         decrypted_phrase = ""
 
@@ -123,11 +142,10 @@ def decrypt(encrypted_text, key):
             # adding decrypted character to the result phrase
             decrypted_phrase += chr(decrypted_character)
 
-        text_output.insert(END, decrypted_phrase)
-    else:
-        text_output.insert(END, "Key must be between 1 and 25!")
+        return decrypted_phrase
 
 
 if __name__ == '__main__':
-    cc_gui()
+    app = CCApp()
+    app.mainloop()
 
