@@ -1,4 +1,5 @@
 """
+DOCSTRING:
 Application for encrypting and decrypting text using Caesar's Cipher
 Problem covering algorithmic and security bases, creating UI from scratch
 Implemented  by: Monika Marinova
@@ -6,7 +7,7 @@ Implemented  by: Monika Marinova
 
 import tkinter as tk
 
-
+# Global variables are used so in case of reusing of code or adding Upper letters to be easily chengable
 # Global variables for defining the range of lower case latin alphabet based on ASCII table
 ascii_lower_a = 97
 ascii_lower_z = 122
@@ -16,6 +17,7 @@ number_of_letters = 25
 
 class CCApp(tk.Tk):
     """
+    DOCSTRING:
     Class in which is defined simple UI interface
     Several widgets are created and aligned into window form using grid alignment
     functions: on_enc_click, on_deck_click
@@ -54,8 +56,10 @@ class CCApp(tk.Tk):
 
     def on_enc_click(self):
         """
+        DOCSTRING:
         Click method for button encryption_button
-        :return: None
+        :param: self
+        :return: NA
         """
 
         # deleting any previous text in Text widget
@@ -68,8 +72,10 @@ class CCApp(tk.Tk):
 
     def on_dec_click(self):
         """
+        DOCSTRING:
         Click method for button decryption_button
-        :return: None
+        :param: self
+        :return: NA
         """
 
         # deleting any previous text in Text widget
@@ -83,6 +89,7 @@ class CCApp(tk.Tk):
 
 def encrypt(text, key):
     """
+    DOCSTRING:
     Function which implements encryption using Caesar's Cipher
     :param text:string
     :param key: string
@@ -90,7 +97,7 @@ def encrypt(text, key):
     """
 
     # validating if the key is in the range between 1 and 25
-    if 1 <= int(key) and int(key) >= 25:
+    if 1 <= int(key) and 25 <= int(key):
         return "Key must be between 1 and 25!"
     else:
         # make the given string lower case
@@ -116,6 +123,7 @@ def encrypt(text, key):
 
 def decrypt(encrypted_text, key):
     """
+    DOCSTRING:
     Function which implements decryption using Caesar's Cipher
     :param encrypted_text: string
     :param key: string
@@ -123,7 +131,7 @@ def decrypt(encrypted_text, key):
     """
 
     # validating if the key is in the range between 1 and 25
-    if 1 <= int(key) and int(key) >= 25:
+    if 1 <= int(key) and 25 <= int(key):
         return "Key must be between 1 and 25!"
     else:
         # creating a list from lower case input text
@@ -146,6 +154,7 @@ def decrypt(encrypted_text, key):
 
 
 if __name__ == '__main__':
+    # creating object of type CCApp
     app = CCApp()
     app.mainloop()
 
