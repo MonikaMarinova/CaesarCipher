@@ -9,10 +9,10 @@ import tkinter as tk
 
 # Global variables are used so in case of reusing of code or adding Upper letters to be easily chengable
 # Global variables for defining the range of lower case latin alphabet based on ASCII table
-ascii_lower_a = 97
-ascii_lower_z = 122
+ASCII_LOWER_A = 97
+ASCII_LOWER_Z= 122
 # Global variable for defining the number of letters in latin alphabet
-number_of_letters = 25
+NUMBER_OF_LETTERS = 25
 
 
 class CCApp(tk.Tk):
@@ -33,7 +33,7 @@ class CCApp(tk.Tk):
         self.text_output_lbl = tk.Label(self, text="Result: ")
 
         # creating a Text widget for displaying result values
-        self.text_output = tk.Text(self, height=2, width=30)
+        self.text_output = tk.Text(self, height=25, width=50)
 
         # creating entries and StringVars for getting entry values
         self.text_entry = tk.Entry(self)
@@ -87,7 +87,8 @@ class CCApp(tk.Tk):
         self.text_output.insert("1.0", decrypt(text_entry_value, key_entry_value))
 
 
-def encrypt(text, key):
+
+def encrypt(text: str, key: str) -> str:
     """
     DOCSTRING:
     Function which implements encryption using Caesar's Cipher
@@ -95,33 +96,36 @@ def encrypt(text, key):
     :param key: string
     :return string
     """
+    # validating if key is a numeric symbol and all charactecters in text are alphabetic
+    if key.isnumeric() and text.isalpha():
+        # validating if the key is in the range between 1 and 25
+        if 1 <= int(key) and 25 <= int(key):
+            return "Key must be between 1 and 25!"
+        else:
+            # removing white spaces from the input text, creating a list
+            phrase = list(text.lower())
+            # creating variable for saving the final result
+            encrypted_phrase = ""
 
-    # validating if the key is in the range between 1 and 25
-    if 1 <= int(key) and 25 <= int(key):
-        return "Key must be between 1 and 25!"
+            for character in phrase:
+                # casting character to integer based on ASCII enumeration and shifting its position forward with key
+                encrypted_character = ord(character) + int(key)
+                # check if encrypted character is sill in the range of lower case latin alphabet
+                if encrypted_character > ASCII_LOWER_Z:
+                    # if not: character is shifted back with 26(number of letters in latin alphabet + 1 to make it shift
+                    # from its original value)
+                    encrypted_character -= NUMBER_OF_LETTERS + 1
+                # adding encrypted character to the result phrase
+                encrypted_phrase += chr(encrypted_character)
+
+            return encrypted_phrase
+               
     else:
-        # make the given string lower case
-        text = text.lower()
-        # removing white spaces from the input text, creating a list
-        phrase = list(''.join(text.split()))
-        # creating variable for saving the final result
-        encrypted_phrase = ""
-
-        for character in phrase:
-            # casting character to integer based on ASCII enumeration and shifting its position forward with key
-            encrypted_character = ord(character) + int(key)
-            # check if encrypted character is sill in the range of lower case latin alphabet
-            if encrypted_character > ascii_lower_z:
-                # if not: character is shifted back with 26(number of letters in latin alphabet + 1 to make it shift
-                # from its original value)
-                encrypted_character -= number_of_letters + 1
-            # adding encrypted character to the result phrase
-            encrypted_phrase += chr(encrypted_character)
-
-        return encrypted_phrase
+        return "Either there is a number in text which should be encrypted or key value isn't a number!"
+            
 
 
-def decrypt(encrypted_text, key):
+def decrypt(encrypted_text: str, key: str) -> str:
     """
     DOCSTRING:
     Function which implements decryption using Caesar's Cipher
@@ -130,27 +134,32 @@ def decrypt(encrypted_text, key):
     :return string
     """
 
-    # validating if the key is in the range between 1 and 25
-    if 1 <= int(key) and 25 <= int(key):
-        return "Key must be between 1 and 25!"
+    # validating if key is a numeric symbol and all charactecters in encrypted text are alphabetic
+    if key.isnumeric() and encrypted_text.isalpha():
+        # validating if the key is in the range between 1 and 25
+        if 1 <= int(key) and 25 <= int(key):
+            return "Key must be between 1 and 25!"
+        else:
+            # creating a list from lower case input text
+            phrase = list(encrypted_text.lower())
+            # creating variable for saving the final result
+            decrypted_phrase = ""
+
+            for character in phrase:
+                # casting character to integer based on ASCII enumeration and shifting its position backward with key
+                decrypted_character = ord(character) - int(key)
+                # check if encrypted character is sill in the range of lower case latin alphabet
+                if decrypted_character < ASCII_LOWER_A:
+                    # if not: character is shifted forward with 26(number of letters in latin alphabet + 1 to make it shift
+                    # from its original value)
+                    decrypted_character += NUMBER_OF_LETTERS + 1
+                    # adding decrypted character to the result phrase
+                decrypted_phrase += chr(decrypted_character)
+
+            return decrypted_phrase
+        
     else:
-        # creating a list from lower case input text
-        phrase = list(encrypted_text.lower())
-        # creating variable for saving the final result
-        decrypted_phrase = ""
-
-        for character in phrase:
-            # casting character to integer based on ASCII enumeration and shifting its position backward with key
-            decrypted_character = ord(character) - int(key)
-            # check if encrypted character is sill in the range of lower case latin alphabet
-            if decrypted_character < ascii_lower_a:
-                # if not: character is shifted forward with 26(number of letters in latin alphabet + 1 to make it shift
-                # from its original value)
-                decrypted_character += number_of_letters + 1
-            # adding decrypted character to the result phrase
-            decrypted_phrase += chr(decrypted_character)
-
-        return decrypted_phrase
+        return "Either there is a number in text which should be decrypted or key value isn't a number!"
 
 
 if __name__ == '__main__':
